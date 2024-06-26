@@ -1,12 +1,13 @@
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import pool,text
 
-from book_app.db import database
 from alembic import context
 
-from book_app.db.models import book,author,publisher,user
+
+from book_app.db import database
+from book_app.db.models import author #,publisher #,user,book
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -67,8 +68,12 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
+
+        connection.execute(text("set search_path to sample"))
+        
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection, target_metadata=target_metadata,
+            version_table_schema="sample"
         )
 
         with context.begin_transaction():

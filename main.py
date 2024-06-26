@@ -2,10 +2,16 @@
 
 from fastapi import FastAPI,Depends
 
-from book_app.routers.book import router
+import uvicorn
+from book_app.routers.book import router as book_router
+
+from book_app.routers.author import router as author_route
 
 app=FastAPI()
 
 
-app.include_router(router)
+app.include_router(book_router)
+app.include_router(author_route)
 
+if __name__=="__main__":
+    uvicorn.run("main:app",reload=True)
