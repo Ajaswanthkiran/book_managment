@@ -11,8 +11,9 @@ class Publisher(Base):
 
     __tablename__="publisher"
     
+    __table_args__ ={"schema":"sample"}
     #pk_publisher_
-    id=Column(UUID,primary_key=True)
+    id=Column(Integer,primary_key=True,autoincrement=True)
     name=Column(String,nullable=False,unique=True)
     
 

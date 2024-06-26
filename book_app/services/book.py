@@ -19,7 +19,8 @@ def add_book(details,session):
 def update_book_title(id,details,session):
     res=session.query(Book).filter(Book.id==id).first()
     res.title=details.title
-    res.author=details.author
+    res.author_user_name=details.author_user_name
+    res.publisher_name=details.publisher_name
     res.isbn=details.isbn
     res.publication_date=details.publication_date
 

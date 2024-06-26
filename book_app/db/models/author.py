@@ -10,8 +10,10 @@ from book_app.db.database import Base
 class Author(Base):
 
     __tablename__="author"
+    
+    __table_args__ ={"schema":"sample"}
     #pk_author
-    id=Column(UUID,primary_key=True)
+    id=Column(Integer,primary_key=True,autoincrement=True)
     name=Column(String,nullable=False,)
     user_name=Column(String,nullable=False,index=True,unique=True)
     password=Column(String,nullable=False)

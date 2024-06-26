@@ -7,7 +7,7 @@ from alembic import context
 
 
 from book_app.db import database
-from book_app.db.models import author #,publisher #,user,book
+from book_app.db.models import author ,publisher ,user,book
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -48,6 +48,8 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        include_schemas=True,
+        version_table_schema="sample"
     )
 
     with context.begin_transaction():
@@ -69,10 +71,10 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
 
-        connection.execute(text("set search_path to sample"))
-        
+      
         context.configure(
             connection=connection, target_metadata=target_metadata,
+            include_schemas=True,
             version_table_schema="sample"
         )
 
