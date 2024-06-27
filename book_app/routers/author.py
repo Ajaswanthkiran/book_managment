@@ -31,3 +31,8 @@ def insert_author(author: Author,db: Session=Depends(get_db)):
 @router.put("")
 def update_author(author: AuthorUpdate,db: Session=Depends(get_db)):
     return crud.update_author(author,db)
+
+
+@router.delete("/{id}")
+def delete_by_id(id:int,db: Session=Depends(get_db)):
+    return crud.delete(id,db)

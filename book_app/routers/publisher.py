@@ -14,11 +14,20 @@ router=APIRouter(prefix="/publisher")
 def get_all(db: Session=Depends(get_db)):
     return crud.get_all(db)
 
+@router.get("/{id}")
+def get_publisher_by_id(id:int,db: Session=Depends(get_db)):
+    return crud.get_publisher_by_id(id,db)
+
 @router.post("")
 def insert(publisher: Publisher,db: Session=Depends(get_db)):
     res=PUBLISHER(name=publisher.name)
     return crud.insert(res,db)
+
 @router.put("/{id}")
 def update_by_id(id: int,name: str,db: Session=Depends(get_db)):
     return crud.update(id,name,db)
 
+
+@router.delete("/{id}")
+def delete(id:int,db: Session=Depends(get_db)):
+    return crud.delete(id,db)

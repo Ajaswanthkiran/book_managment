@@ -37,8 +37,8 @@ def add_book(b:book.Book,db: Session=Depends(get_db)):
     return crud.add_book(details,db)
 
 
-@router.put("/books/{book_id}")
-def update__book_title_by_author_name(id:int,updated_details:book.Book,db: Session=Depends(get_db)):
+@router.put("/books/{id}")
+def update__book_title_by_id(id:int,updated_details:book.UpdateBook,db: Session=Depends(get_db)):
     return crud.update_book_title(id,updated_details,db)
 
 

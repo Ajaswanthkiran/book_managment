@@ -20,3 +20,10 @@ def update_author(author_details,session):
     res[0].password=author_details.password
     res[0].mail=author_details.mail
     return res
+
+
+def delete(id,session):
+    res=session.query(Author).get(id)
+    session.delete(res)
+    session.commit()
+    return "deleted"

@@ -11,3 +11,9 @@ class Book(BaseModel):
     publisher_name: str=Field(max_length=100,min_length=3)
     publication_date: date 
     isbn: str =Field(min_length=13,max_length=13)
+
+
+class UpdateBook(BaseModel):
+    title: str =Field(max_length=100,min_length=3)
+    publication_date: date 
+    isbn: str =Field(min_length=13,max_length=13)
