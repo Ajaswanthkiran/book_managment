@@ -6,33 +6,50 @@ from sqlalchemy.orm import Session
 from book_app.db.database import get_db
 from book_app.services import author as crud
 from book_app.db.models.author import Author as author_insert
+from fastapi_pagination import paginate,Page,Params
+from book_app.schemas.author import Author,AuthorUpdate,AuthorOut
 
-from book_app.schemas.author import Author,AuthorUpdate
+
+from book_app.routers import oauth2
+from book_app.schemas.token import TokenData
+
+from book_app.services.hassing import Hash 
+
 router=APIRouter(
-    prefix="/author"
+    prefix="/author",
+    tags=['Author']
 )
 
 
-@router.get("/list")
-def get_all_authors(db: Session=Depends(get_db)):
+@router.get("/list",response_model=list[AuthorOut])
+def get_all_authors(db: Session=Depends(get_db),get_current_user: TokenData=Depends(oauth2.get_current_active_author)):
     return crud.get_all_authors(db)
 
-@router.get("/{id}")
-def get_by_id(id:int,db: Session=Depends(get_db)):
-    return crud.get_by_id(id,db)
 
 
 @router.post("")
-def insert_author(author: Author,db: Session=Depends(get_db)):
-    res=author_insert(name=author.name,user_name=author.user_name,password=author.password,mail=author.mail)
+def insert_author(author: Author,db: Session=Depends(get_db),get_current_user: TokenData=Depends(oauth2.get_current_active_author)):
+    hash=Hash()
+    res=author_insert(name=author.name,user_name=author.user_name,password=hash.bcrypt(author.password),mail=author.mail)
     return  crud.add(res,db)
     
 
-@router.put("")
-def update_author(author: AuthorUpdate,db: Session=Depends(get_db)):
-    return crud.update_author(author,db)
+@router.put("/{id}")
+def update_author(id:int,author: AuthorUpdate,db: Session=Depends(get_db),get_current_user: TokenData=Depends(oauth2.get_current_active_author)):
+    return crud.update_author(id,author,db)
 
 
 @router.delete("/{id}")
-def delete_by_id(id:int,db: Session=Depends(get_db)):
+def delete_by_id(id:int,db: Session=Depends(get_db),get_current_user: TokenData=Depends(oauth2.get_current_active_author)):
     return crud.delete(id,db)
+
+@router.get("/page",response_model=Page[AuthorOut])
+def get_page(param: Params=Depends(), db: Session=Depends(get_db),get_current_user: TokenData=Depends(oauth2.get_current_active_author)):
+    print(param)
+    res=crud.get_all_authors(db)
+    return paginate(res,param)
+
+@router.get("/{id}",response_model=AuthorOut)
+def get_by_id(id:int,db: Session=Depends(get_db),get_current_user: TokenData=Depends(oauth2.get_current_active_author)):
+    return crud.get_by_id(id,db)
+    

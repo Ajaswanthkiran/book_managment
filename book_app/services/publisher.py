@@ -2,25 +2,43 @@
 from book_app.db.models.publisher import Publisher 
 
 def get_all(session):
-    return session.query(Publisher).all()
+    try:
+        return session.query(Publisher).all()
+    except :
+        return False
 
 def get_publisher_by_id(id,session):
-    res=session.query(Publisher).get(id)
-    return res
+    try:
+        res=session.query(Publisher).filter(Publisher.id==id).first()
+        return res
+    except :
+        return False
 
 
 def insert(p,session):
-    session.add(p)
-    session.commit()
-    return 'added'
+    
+    try:
+        session.add(p)
+
+        session.commit()
+        return True
+    except :
+        return False
 
 def update(id,name,session):
-    res=session.query(Publisher).filter(Publisher.id==id).first()
-    res[0].name=name
-    return "updated"
+    try:
+        res=session.query(Publisher).get(id)
+        res.name=name
+        session.commit()
+        return True
+    except :
+        return False
 
 def delete(id,session):
-    res=session.query(Publisher).get(id)
-    session.delete(res)
-    session.commit()
-    return "deleted"
+    try:
+        res=session.query(Publisher).get(id)
+        session.delete(res)
+        session.commit()
+        return True
+    except:
+        return False

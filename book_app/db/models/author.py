@@ -18,6 +18,7 @@ class Author(Base):
     user_name=Column(String,nullable=False,index=True,unique=True)
     password=Column(String,nullable=False)
     mail=Column(String,nullable=False,unique=True)
+    role=Column(String, default="author")
 
     
 

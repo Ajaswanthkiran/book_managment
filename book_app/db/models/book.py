@@ -14,9 +14,10 @@ class Book(Base):
     __table_args__ ={"schema":"sample"}
     #pk_book_
     id = Column(Integer,primary_key=True,autoincrement=True)
-    title=Column(String,nullable=False,index=True)
+    title=Column(String,nullable=False,index=True,unique=True)
     author_user_name=Column(String,ForeignKey(Author.user_name),index=True)
     publisher_name=Column(String,ForeignKey(Publisher.name))
-    publication_data=Column(Date,nullable=False)
+    publication_date=Column(Date,nullable=False)
     isbn=Column(String,nullable=False)
+    role=Column(String, default="admin")
     

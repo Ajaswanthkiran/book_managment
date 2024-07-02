@@ -13,6 +13,17 @@ class Book(BaseModel):
     isbn: str =Field(min_length=13,max_length=13)
 
 
+class BookOut(BaseModel):
+
+    title: str =Field(max_length=100,min_length=3)
+    author_user_name: str=Field(max_length=100,min_length=3)
+    publisher_name: str=Field(max_length=100,min_length=3)
+    publication_date: date 
+    isbn: str =Field(min_length=13,max_length=13)
+
+    class Config:
+        from_attributes = True
+
 class UpdateBook(BaseModel):
     title: str =Field(max_length=100,min_length=3)
     publication_date: date 

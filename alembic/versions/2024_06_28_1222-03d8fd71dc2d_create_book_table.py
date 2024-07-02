@@ -1,8 +1,8 @@
 """create book table
 
-Revision ID: dded68212060
-Revises: b368ce70c671
-Create Date: 2024-06-26 17:59:00.551754
+Revision ID: 03d8fd71dc2d
+Revises: dc40d969b642
+Create Date: 2024-06-28 12:22:22.200489
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'dded68212060'
-down_revision: Union[str, None] = 'b368ce70c671'
+revision: str = '03d8fd71dc2d'
+down_revision: Union[str, None] = 'dc40d969b642'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -25,15 +25,15 @@ def upgrade() -> None:
     sa.Column('title', sa.String(), nullable=False),
     sa.Column('author_user_name', sa.String(), nullable=True),
     sa.Column('publisher_name', sa.String(), nullable=True),
-    sa.Column('publication_data', sa.Date(), nullable=False),
+    sa.Column('publication_date', sa.Date(), nullable=False),
     sa.Column('isbn', sa.String(), nullable=False),
-    sa.ForeignKeyConstraint(['author_user_name'], ['sample.author.user_name'],name="FK_books_author_user_name_author_user_name"  ),
-    sa.ForeignKeyConstraint(['publisher_name'], ['sample.publisher.name'],name="FK_books_publisher_name_publisher_name" ),
-    sa.PrimaryKeyConstraint('id',name="PK_books_id"),
+    sa.ForeignKeyConstraint(['author_user_name'], ['sample.author.user_name'], ),
+    sa.ForeignKeyConstraint(['publisher_name'], ['sample.publisher.name'], ),
+    sa.PrimaryKeyConstraint('id'),
     schema='sample'
     )
     op.create_index(op.f('ix_sample_books_author_user_name'), 'books', ['author_user_name'], unique=False, schema='sample')
-    op.create_index(op.f('ix_sample_books_title'), 'books', ['title'], unique=False, schema='sample')
+    op.create_index(op.f('ix_sample_books_title'), 'books', ['title'], unique=True, schema='sample')
     # ### end Alembic commands ###
 
 

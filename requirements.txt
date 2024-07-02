@@ -4,3 +4,7 @@ fastapi
 uvicorn
 psycopg2
 email-validator
+passlib
+bcrypt
+python-multipart 
+python-jose
