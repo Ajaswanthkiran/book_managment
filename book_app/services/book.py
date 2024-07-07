@@ -2,6 +2,10 @@
 
 from book_app.db.models.book import Book
 
+from book_app.services.email_service import  sendmail
+
+from book_app.db.models import author,publisher
+
 def get_all_book(session):
     
     try:
@@ -22,10 +26,19 @@ def add_book(details,session):
     
     try:
         session.add(details)
+        author_res=session.query(author.Author).filter(details.author_user_name==author.Author.user_name).first()
+        
+        print(author_res.mail)
         session.commit()
+
+        sendmail(author_res.mail,details.title,details.author_user_name,details.publisher_name)
+        # publisher_res=session.query(publisher.Publisher).filter(details.publisher_name).first()
+        
+        # sendmail(publisher_res.mail,details.title,details.author_user_name,details.publisher_name)
+        
         return True
-    except :
-        return False
+    except Exception as e:
+        return e
 
 
 

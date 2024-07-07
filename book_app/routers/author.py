@@ -21,6 +21,9 @@ router=APIRouter(
 )
 
 
+
+
+
 @router.get("/list",response_model=list[AuthorOut])
 def get_all_authors(db: Session=Depends(get_db),get_current_user: TokenData=Depends(oauth2.get_current_active_author)):
     return crud.get_all_authors(db)
@@ -44,8 +47,8 @@ def delete_by_id(id:int,db: Session=Depends(get_db),get_current_user: TokenData=
     return crud.delete(id,db)
 
 @router.get("/page",response_model=Page[AuthorOut])
-def get_page(param: Params=Depends(), db: Session=Depends(get_db),get_current_user: TokenData=Depends(oauth2.get_current_active_author)):
-    print(param)
+def get_page(page:int,size:int, db: Session=Depends(get_db),get_current_user: TokenData=Depends(oauth2.get_current_active_author)):
+    param=Params(page=page,size=size)
     res=crud.get_all_authors(db)
     return paginate(res,param)
 

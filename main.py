@@ -21,5 +21,6 @@ app.include_router(publisher_route)
 app.include_router(user_router)
 
 
+
 if __name__=="__main__":
     uvicorn.run("main:app",reload=True)

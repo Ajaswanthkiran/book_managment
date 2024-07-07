@@ -29,12 +29,9 @@ def get_book_by_id(id:int,db: Session=Depends(get_db)):
 
 @router.post("/books")
 def add_book(b:book.Book,db: Session=Depends(get_db)):
-    try:
-       
-        details=Book(title=b.title,author_user_name=b.author_user_name,publisher_name=b.publisher_name,publication_date=b.publication_date,isbn=b.isbn)
-        return crud.add_book(details,db)
-    except:
-        db.rollback()
+    details=Book(title=b.title,author_user_name=b.author_user_name,publisher_name=b.publisher_name,publication_date=b.publication_date,isbn=b.isbn)
+    return crud.add_book(details,db)
+    
 
 @router.put("/books/{id}")
 def update__book_title_by_id(id:int,updated_details:book.UpdateBook,db: Session=Depends(get_db)):
@@ -48,7 +45,7 @@ def delete(id:int,db:Session=Depends(get_db)):
 
 
 @router.get("/book/page", response_model=Page[book.BookOut])
-def get_book_page(param: Params=Depends(),db: Session=Depends(get_db),get_current_user: TokenData=Depends(oauth2.get_current_active_user)):
+def get_book_page(param: Params=Depends(),db: Session=Depends(get_db)):
 
     res=crud.get_all_book(db)
     return paginate(res,param)
