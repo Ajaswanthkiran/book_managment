@@ -11,8 +11,8 @@ def get_all_book(session):
     try:
         res=session.query(Book).all()
         return res
-    except :
-        return False
+    except Exception as e:
+        return e
 
 
 def get_book_by_id(id,session):

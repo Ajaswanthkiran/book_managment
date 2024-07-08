@@ -1,6 +1,8 @@
 
 from fastapi import APIRouter,Depends
 
+from fastapi.responses import FileResponse
+
 from book_app.services import book as crud
 from book_app.db import database
 from book_app.db.models.book import Book
@@ -51,3 +53,10 @@ def get_book_page(param: Params=Depends(),db: Session=Depends(get_db)):
     return paginate(res,param)
 
    
+
+@router.get("/book/weeklyreport" )
+def get_weeklyreport(current_user: TokenData = Depends(oauth2.get_current_user)):
+
+    # return FileResponse(path=r"C:\Users\16307\Desktop\book_managment\weekly_report.csv",filename="weekly_book_report.csv",media_type="csv")
+    return FileResponse(path=r"C:\Users\16307\Desktop\book_managment\weekly_report.csv", filename="weekly_book_report.csv", media_type='application/octet-stream', headers={"Content-Disposition": "attachment; filename=sample.csv"})
+    # return "a"
