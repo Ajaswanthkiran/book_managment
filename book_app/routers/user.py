@@ -25,13 +25,13 @@ router=APIRouter(prefix="/user",
 
 
 @router.get("/list",response_model=list[user.UserOut])
-def get_all_users(db: Session=Depends(get_db),get_current_user: TokenData=Depends(oauth2.get_current_active_user)):
+def get_all_users(db: Session=Depends(get_db)):
     return crud.get_all_users(db)
 
     
 
 @router.post("")
-def add_user(b:user.User,db: Session=Depends(get_db),get_current_user: TokenData=Depends(oauth2.get_current_active_user)):
+def add_user(b:user.User,db: Session=Depends(get_db)):
     
     hash=Hash()
 
@@ -42,21 +42,20 @@ def add_user(b:user.User,db: Session=Depends(get_db),get_current_user: TokenData
 
 
 @router.put("/{id}")
-def update_user_by_id(id:int,updated_details:user.UpdateUser,db: Session=Depends(get_db),get_current_user: TokenData=Depends(oauth2.get_current_active_user)):
+def update_user_by_id(id:int,updated_details:user.UpdateUser,db: Session=Depends(get_db)):
     return crud.update_user_by_id(id,updated_details,db)
 
 
 @router.delete("/{id}")
-def delete(id:int,db:Session=Depends(get_db),get_current_user: TokenData=Depends(oauth2.get_current_active_user)):
+def delete(id:int,db:Session=Depends(get_db)):
     return crud.delete_user(id,db)
 
 @router.get("/page",response_model=Page[user.UserOut])
-def get_page(param: Params=Depends(), db: Session=Depends(get_db),get_current_user: TokenData=Depends(oauth2.get_current_active_user)):
+def get_page(page:int,size:int,db: Session=Depends(get_db)):
+    param=Params(page=page,size=size)
     res=crud.get_all_users(db)
-
-
     return paginate(res,param)
 
 @router.get("/{id}",response_model=user.UserOut)
-def get_user_by_id(id:int,db: Session=Depends(get_db),get_current_user: TokenData=Depends(oauth2.get_current_active_user)):
+def get_user_by_id(id:int,db: Session=Depends(get_db)):
     return crud.get_user_by_id(id,db)

@@ -15,7 +15,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
+        expire = datetime.now(timezone.utc) + timedelta(hours=1)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
@@ -27,14 +27,14 @@ def verify_token(token:str,credentials_exception):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
-        
+        print(username,token)
         if username is None:
             raise credentials_exception
 
         token_data = TokenData(username=username,role=payload.get("role"))
     except JWTError:
         raise credentials_exception
-    print(token_data)
+
     return token_data
     
    
