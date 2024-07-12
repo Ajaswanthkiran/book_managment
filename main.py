@@ -19,7 +19,6 @@ app=FastAPI()
 
 @app.middleware("http")
 async def authorization(request: Request, call_next):
-    
   
     try:
         if request.url.path in ['/login','/docs','/openapi.json']:
